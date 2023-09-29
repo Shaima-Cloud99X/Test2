@@ -9,6 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import Verification from './screens/Register/Verification';
 
 const PhoneNumber = () => {
   const navigation = useNavigation();
@@ -22,6 +23,39 @@ const PhoneNumber = () => {
 
   const handleNumberChange = number => {
     setNumber(number);
+  };
+
+  const [referenceNo, setReferenceNo] = useState('');
+
+  const requestOTP = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.mspace.lk/otp/request', // Replace with your server's URL
+        {
+          applicationId: 'APP_008054',
+          password: '6b228011f46537a92d11e03fa4c9fa04',
+          subscriberId: `tel:${number}`,
+          applicationHash: 'abcdefgh',
+          applicationMetaData: {
+            client: 'MOBILEAPP',
+            device: 'Pixel 3a',
+            os: 'android 10',
+            appCode: 'https://play.google.com/store/apps/details?id=lk',
+          },
+        }
+      );
+
+      // Handle the response from the server, which should include OTP generation details
+      if (response.data && response.data.otpSent) {
+        setReferenceNo(response.data.referenceNo);
+        navigation.navigate('Verification', { referenceNo: response.data.referenceNo }); // Redirect to OTP verification screen
+      } else {
+        Alert.alert('Error', 'Failed to request OTP.');
+      }
+    } catch (error) {
+      console.error('Error requesting OTP:', error);
+      Alert.alert('Error', 'Failed to request OTP.');
+    }
   };
 
   return (
@@ -56,7 +90,9 @@ const PhoneNumber = () => {
             </View>
             <TouchableOpacity
               style={styles.buttonStyle}
-              onPress={() => navigation.navigate('Verification')}>
+              // onPress={() => navigation.navigate('Verification')}
+              onPress={requestOTP}
+              >
               <Text style={styles.buttonText}>Verification</Text>
             </TouchableOpacity>
             <TouchableOpacity

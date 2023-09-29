@@ -9,6 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import CongratsScreen from './screens/Register/Congrats';
 
 const Verification = () => {
   const navigation = useNavigation();
@@ -32,6 +33,34 @@ const Verification = () => {
   };
   const handleOTP4Change = number => {
     setOtp4(number);
+  };
+
+  const { referenceNo } = route.params;
+
+  const verifyOTP = async () => {
+    try {
+      const otp = otp1 + otp2 + otp3 + otp4;
+      const response = await axios.post('https://api.mspace.lk/otp/verify', {
+        applicationId: 'APP_008054',
+        password: '6b228011f46537a92d11e03fa4c9fa04',
+        referenceNo, // Replace with the actual referenceNo
+        otp: otp,
+      });
+
+
+       // Handle the response from the server to verify OTP
+       if (response.data && response.data.otpVerified) {
+        // OTP is valid, activate the subscription
+        // You can navigate to the next screen or perform the necessary action here
+        Alert.alert('Success', 'OTP verified successfully!');
+        navigation.navigate('CongratsScreen');
+      } else {
+        Alert.alert('Error', 'OTP verification failed.');
+      }
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      Alert.alert('Error', 'OTP verification failed.');
+    }
   };
 
   return (
@@ -91,7 +120,8 @@ const Verification = () => {
           <View style={{gap: 12}}>
             <TouchableOpacity
               style={styles.buttonStyle}
-              onPress={() => navigation.navigate('CongratsScreen')}>
+              // onPress={() => navigation.navigate('CongratsScreen')}
+              onPress={verifyOTP}>
               <Text style={styles.buttonText}>Verify</Text>
             </TouchableOpacity>
             <TouchableOpacity
