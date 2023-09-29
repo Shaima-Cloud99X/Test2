@@ -39,28 +39,44 @@ const PhoneNumber = () => {
         {
           applicationId: 'APP_008054',
           password: '6b228011f46537a92d11e03fa4c9fa04',
-          subscriberId: `tel:${number}`,
+          subscriberId: `tel:94711415858`,
           applicationHash: 'abcdefgh',
           applicationMetaData: {
             client: 'MOBILEAPP',
-            device: 'Pixel 7',
-            os: 'android 13',
+            device: 'Galaxy M01 Core',
+            os: 'android 10',
             appCode: 'https://play.google.com/store/apps/details?id=lk',
           },
         }
       );
 
       
+      console.log('API Response:', response);
+
+
+      
       // Handle the response from the server, which should include OTP generation details
-      if (response.data && response.data.otpSent) {
+      if (response.data && response.data.statusCode === 'S1000') {
         // setReferenceNo(response.data.referenceNo);
         navigation.navigate('Verification', { referenceNo: response.data.referenceNo }); // Redirect to OTP verification screen
       } else {
         Alert.alert('Error', 'Failed to request OTP.');
       }
     } catch (error) {
-      console.error('Error requesting OTP:', error);
-      Alert.alert('Error', 'Failed to request OTP.');
+      // console.error('Error requesting OTP:', error);
+      // Alert.alert('Error', 'Failed to request OTP.');
+      if (error.response) {
+    // The request was made, but the server responded with an error status code
+    console.error('Server Error:', error.response.status);
+    console.error('Response Data:', error.response.data);
+  } else if (error.request) {
+    // The request was made, but there was no response from the server
+    console.error('No Response from Server');
+  } else {
+    // Something else happened while setting up the request
+    console.error('Error:', error.message);
+  }
+  Alert.alert('Error', 'Failed to request OTP.');
     }
   };
 
@@ -102,6 +118,7 @@ const PhoneNumber = () => {
               <Text style={styles.buttonText}>Verification</Text>
             </TouchableOpacity>
             <TouchableOpacity
+             onPress={() => navigation.navigate('Verification')}
               style={[styles.buttonStyle, {backgroundColor: '#23262F'}]}>
               <Text style={[styles.buttonText, {color: '#C2C3CB'}]}>Later</Text>
             </TouchableOpacity>
