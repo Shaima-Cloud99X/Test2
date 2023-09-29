@@ -9,7 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import CongratsScreen from './screens/Register/Congrats';
+import axios from 'axios';
 
 const Verification = () => {
   const navigation = useNavigation();
@@ -35,6 +35,8 @@ const Verification = () => {
     setOtp4(number);
   };
 
+  const route = useRoute();
+
   const { referenceNo } = route.params;
 
   const verifyOTP = async () => {
@@ -43,7 +45,7 @@ const Verification = () => {
       const response = await axios.post('https://api.mspace.lk/otp/verify', {
         applicationId: 'APP_008054',
         password: '6b228011f46537a92d11e03fa4c9fa04',
-        referenceNo, // Replace with the actual referenceNo
+        referenceNo: referenceNo, // Replace with the actual referenceNo
         otp: otp,
       });
 
