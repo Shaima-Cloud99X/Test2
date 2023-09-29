@@ -52,7 +52,7 @@ const PhoneNumber = () => {
 
       
       // Handle the response from the server, which should include OTP generation details
-      if (response.data && response.data.otpSent) {
+      if (response.data && response.data.statusCode === 'S1000') {
         // setReferenceNo(response.data.referenceNo);
         navigation.navigate('Verification', { referenceNo: response.data.referenceNo }); // Redirect to OTP verification screen
       } else {
