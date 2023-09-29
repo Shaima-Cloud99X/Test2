@@ -1,15 +1,20 @@
-import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import Verification from './screens/Register/Verification';
+// import React from 'react';
+// import {
+//   View,
+//   StyleSheet,
+//   Text,
+//   Image,
+//   TouchableOpacity,
+//   ScrollView,
+//   TextInput,
+// } from 'react-native';
+// import {useNavigation} from '@react-navigation/native';
+// import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView, TextInput, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const PhoneNumber = () => {
   const navigation = useNavigation();
@@ -25,7 +30,7 @@ const PhoneNumber = () => {
     setNumber(number);
   };
 
-  const [referenceNo, setReferenceNo] = useState('');
+  // const [referenceNo, setReferenceNo] = useState('');
 
   const requestOTP = async () => {
     try {
@@ -38,16 +43,17 @@ const PhoneNumber = () => {
           applicationHash: 'abcdefgh',
           applicationMetaData: {
             client: 'MOBILEAPP',
-            device: 'Pixel 3a',
-            os: 'android 10',
+            device: 'Pixel 7',
+            os: 'android 13',
             appCode: 'https://play.google.com/store/apps/details?id=lk',
           },
         }
       );
 
+      
       // Handle the response from the server, which should include OTP generation details
       if (response.data && response.data.otpSent) {
-        setReferenceNo(response.data.referenceNo);
+        // setReferenceNo(response.data.referenceNo);
         navigation.navigate('Verification', { referenceNo: response.data.referenceNo }); // Redirect to OTP verification screen
       } else {
         Alert.alert('Error', 'Failed to request OTP.');
