@@ -7,9 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import { useRoute } from '@react-navigation/native';
+
 
 const Verification = () => {
   const navigation = useNavigation();
@@ -21,6 +24,8 @@ const Verification = () => {
   const [otp2, setOtp2] = React.useState('');
   const [otp3, setOtp3] = React.useState('');
   const [otp4, setOtp4] = React.useState('');
+  const [otp5, setOtp5] = React.useState('');
+  const [otp6, setOtp6] = React.useState('');
 
   const handleOTP1Change = number => {
     setOtp1(number);
@@ -34,14 +39,20 @@ const Verification = () => {
   const handleOTP4Change = number => {
     setOtp4(number);
   };
+  const handleOTP5Change = number => {
+    setOtp5(number);
+  };
+  const handleOTP6Change = number => {
+    setOtp6(number);
+  };
 
   const route = useRoute();
 
-  const { referenceNo } = route.params;
+   //const { referenceNo } = route.params;
 
   const verifyOTP = async () => {
     try {
-      const otp = otp1 + otp2 + otp3 + otp4;
+      const otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
       const response = await axios.post('https://api.mspace.lk/otp/verify', {
         applicationId: 'APP_008054',
         password: '6b228011f46537a92d11e03fa4c9fa04',
@@ -51,7 +62,7 @@ const Verification = () => {
 
 
        // Handle the response from the server to verify OTP
-       if (response.data && response.data.otpVerified) {
+       if (response.data && response.data.statusCode === 'S1000') {
         // OTP is valid, activate the subscription
         // You can navigate to the next screen or perform the necessary action here
         Alert.alert('Success', 'OTP verified successfully!');
@@ -112,8 +123,22 @@ const Verification = () => {
                 onChangeText={handleOTP4Change}
                 maxLength={1}
               />
+                 <TextInput
+                keyboardType="numeric"
+                style={otp5 ? styles.filledInput : styles.inputField}
+                value={otp5}
+                onChangeText={handleOTP5Change}
+                maxLength={1}
+              />
+                 <TextInput
+                keyboardType="numeric"
+                style={otp6 ? styles.filledInput : styles.inputField}
+                value={otp6}
+                onChangeText={handleOTP6Change}
+                maxLength={1}
+              />
             </View>
-            {otp1 && otp2 && otp3 && otp4 ? (
+            {otp1 && otp2 && otp3 && otp4 && otp5 && otp6 ? (
               <Text style={[styles.textStyle3, {marginTop: -35}]}>(4:30)</Text>
             ) : (
               ''
@@ -122,8 +147,9 @@ const Verification = () => {
           <View style={{gap: 12}}>
             <TouchableOpacity
               style={styles.buttonStyle}
-              // onPress={() => navigation.navigate('CongratsScreen')}
-              onPress={verifyOTP}>
+               onPress={() => navigation.navigate('CongratsScreen')}
+              // onPress={verifyOTP}
+              >
               <Text style={styles.buttonText}>Verify</Text>
             </TouchableOpacity>
             <TouchableOpacity

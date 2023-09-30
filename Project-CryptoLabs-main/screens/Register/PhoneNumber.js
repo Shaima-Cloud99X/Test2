@@ -39,11 +39,11 @@ const PhoneNumber = () => {
         {
           applicationId: 'APP_008054',
           password: '6b228011f46537a92d11e03fa4c9fa04',
-          subscriberId: `tel:94711415858`,
+          subscriberId: `tel:94719087869`,
           applicationHash: 'abcdefgh',
           applicationMetaData: {
             client: 'MOBILEAPP',
-            device: 'Galaxy M01 Core',
+            device: 'HUAWEI nova 7 SE',
             os: 'android 10',
             appCode: 'https://play.google.com/store/apps/details?id=lk',
           },
@@ -112,16 +112,18 @@ const PhoneNumber = () => {
             </View>
             <TouchableOpacity
               style={styles.buttonStyle}
-              // onPress={() => navigation.navigate('Verification')}
-              onPress={requestOTP}
+              onPress={() => navigation.navigate('Verification')}
+             // onPress={requestOTP}
               >
               <Text style={styles.buttonText}>Verification</Text>
             </TouchableOpacity>
             <TouchableOpacity
-             onPress={() => navigation.navigate('Verification')}
-              style={[styles.buttonStyle, {backgroundColor: '#23262F'}]}>
-              <Text style={[styles.buttonText, {color: '#C2C3CB'}]}>Later</Text>
+                onPress={() => navigation.navigate('Verification')}
+                style={[styles.buttonStyle, { backgroundColor: '#23262F' }]}
+                                                                            >
+              <Text style={[styles.buttonText, { color: '#C2C3CB' }]}>Later</Text>
             </TouchableOpacity>
+
           </View>
         </View>
       </ScrollView>
